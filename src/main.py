@@ -8,7 +8,7 @@ import sys
 
 def main():
     basepath = "/"
-    if len(sys.argv) < 2:
+    if len(sys.argv) > 1:
         basepath = sys.argv[1]
     copy_from_static_to_public("static", "docs")
     generate_recursively("content",
