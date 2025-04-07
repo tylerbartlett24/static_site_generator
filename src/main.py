@@ -4,12 +4,17 @@ from text_node_to_html_node import text_node_to_html_node
 from public_stuff import copy_from_static_to_public
 from generating_functions import *
 import os
+import sys
 
 def main():
-    copy_from_static_to_public("static", "public")
+    basepath = "/"
+    if len(sys.argv) < 2:
+        basepath = sys.argv[1]
+    copy_from_static_to_public("static", "docs")
     generate_recursively("content",
                   "template.html", 
-                  "public")
+                  "docs",
+                  basepath)
     
 
 

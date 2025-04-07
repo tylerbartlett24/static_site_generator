@@ -6,7 +6,7 @@ def extract_title(markdown):
     title = re.search(r"# (.*?)\n\n", markdown).group(0).lstrip("# ").strip()
     return title
     
-def generate_page(filepath, template_path, dest_path):
+def generate_page(filepath, template_path, dest_path, basepath):
     print(f"Generating page from {filepath} to {dest_path} " +
           f"using {template_path}")
     with open(filepath) as f:
@@ -17,21 +17,23 @@ def generate_page(filepath, template_path, dest_path):
     html = markdown_to_html_node(markdown).to_html()
     page = re.sub(r"{{ Title }}", title, template)
     page = re.sub(r"{{ Content }}", html, page)
+    page = re.sub(r'href="/', 'href="' + basepath, page)
+    page = re.sub(r'src="/', 'src="' + basepath, page)
     dest_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
-        os.mkdir(dest_dir)
+        os.makedirs(dest_dir)
     with open(dest_path, "w") as f:
         f.write(page)
         
-def generate_recursively(from_dir, template_path, dest_dir):
+def generate_recursively(from_dir, template_path, dest_dir, basepath):
     for file_path in os.listdir(from_dir):
         check = os.path.join(from_dir, file_path)
         if os.path.isfile(check) or os.path.islink(check):
             dest_path = os.path.join(dest_dir, file_path.rstrip("md")+"html")
-            generate_page(check, template_path, dest_path)
+            generate_page(check, template_path, dest_path, basepath)
         elif os.path.isdir(check):
             dest_path = os.path.join(dest_dir, file_path)
-            generate_recursively(check, template_path, dest_path)
+            generate_recursively(check, template_path, dest_path, basepath)
         else:
             raise Exception("Oh shit")
             
