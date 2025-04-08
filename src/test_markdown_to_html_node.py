@@ -35,7 +35,7 @@ class TestMarkdownToHTMLNode(unittest.TestCase):
     def test_markdown_to_html_node(self):
         text = ">quote>quote\n\n## Heading\n\n1. list\n2. list\n\ntext"
         target = ("<div><blockquote>quotequote</blockquote><h2>Heading</h2>"
-                  "<ol><li>list\n</li><li>list</li></ol><p>text</p></div>")
+                  "<ol><li>list</li><li>list</li></ol><p>text</p></div>")
         trial = markdown_to_html_node(text)
         self.assertEqual(trial.to_html(), target)
         
