@@ -17,8 +17,8 @@ def generate_page(filepath, template_path, dest_path, basepath):
     html = markdown_to_html_node(markdown).to_html()
     page = re.sub(r"{{ Title }}", title, template)
     page = re.sub(r"{{ Content }}", html, page)
-    page = re.sub(r'href="/', 'href="' + basepath + "/", page)
-    page = re.sub(r'src="/', 'src="' + basepath + "/", page)
+    page = re.sub(r'href="/', 'href="' + basepath, page)
+    page = re.sub(r'src="/', 'src="' + basepath, page)
     dest_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
